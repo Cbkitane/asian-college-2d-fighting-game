@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+
+        <script src="app.js" defer></script>
+        <title>Asian College Fighting Game</title>
+    </head>
+    <body>
+        <div class="container">
+            <!-- SCREEN 91 -->
+
+            <div class="screen01 main-menu">
+                <button id="screen01-button-start">
+                    Start Game
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <!-- SCREEN 02 -->
+
+            <div class="screen02 character-selection">
+                <h4 class="header">Select Character</h4>
+                <div class="character-selection-wrapper">
+                    <div class="player01-selection-wrapper selection-wrapper">
+                        <h4 class="player01-header">Player 1</h4>
+                        <div class="characters">
+                            <div class="character">
+                                <label for="Axe1">
+                                    <input
+                                        type="radio"
+                                        name="player01"
+                                        id="Axe1"
+                                        value="Axe"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/axe.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                            <div class="character">
+                                <label for="Chen1">
+                                    <input
+                                        type="radio"
+                                        name="player01"
+                                        id="Chen1"
+                                        value="Chen"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/chen.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                            <div class="character">
+                                <label for="Pudge1">
+                                    <input
+                                        type="radio"
+                                        name="player01"
+                                        id="Pudge1"
+                                        value="Pudge"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pudge.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <h4 class="player01-character-selected"></h4>
+                    </div>
+
+                    <div class="player02-selection-wrapper selection-wrapper">
+                        <h4 class="player02-header">Player 2</h4>
+                        <div class="characters">
+                            <div class="character">
+                                <label for="Axe2">
+                                    <input
+                                        type="radio"
+                                        name="player02"
+                                        id="Axe2"
+                                        value="Axe"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/axe.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                            <div class="character">
+                                <label for="Chen2">
+                                    <input
+                                        type="radio"
+                                        name="player02"
+                                        id="Chen2"
+                                        value="Chen"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/chen.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                            <div class="character">
+                                <label for="Pudge2">
+                                    <input
+                                        type="radio"
+                                        name="player02"
+                                        id="Pudge2"
+                                        value="Pudge"
+                                        class="character-icon"
+                                        hidden
+                                    />
+                                    <img
+                                        src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pudge.png"
+                                        alt=""
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <h4 class="player02-character-selected"></h4>
+                    </div>
+                </div>
+                <button id="screen02-button-continue">Continue</button>
+            </div>
+
+            <!-- SCREEN 03 -->
+
+            <div class="screen03 scene-selection">
+                <div class="scene-selection-wrapper">
+                    <h4 class="scene-header">Select scene</h4>
+                    <div class="scenes">
+                        <div class="scene">
+                            <label for="scene1">
+                                <input
+                                    type="radio"
+                                    name="scene"
+                                    id="scene1"
+                                    value="scene1"
+                                    class="scene-icon"
+                                    hidden
+                                />
+                                <img
+                                    src="assets/scenes/scene-1.gif"
+                                    alt=""
+                                    class="img-scene-icon"
+                                />
+                            </label>
+                        </div>
+                        <div class="scene">
+                            <label for="scene2">
+                                <input
+                                    type="radio"
+                                    name="scene"
+                                    id="scene2"
+                                    value="scene2"
+                                    class="scene-icon"
+                                    hidden
+                                />
+                                <img
+                                    src="assets/scenes/scene-2.gif"
+                                    alt=""
+                                    class="img-scene-icon"
+                                />
+                            </label>
+                        </div>
+                        <div class="scene">
+                            <label for="scene3">
+                                <input
+                                    type="radio"
+                                    name="scene"
+                                    id="scene3"
+                                    value="scene3"
+                                    class="scene-icon"
+                                    hidden
+                                />
+                                <img
+                                    src="assets/scenes/scene-3.gif"
+                                    alt=""
+                                    class="img-scene-icon"
+                                />
+                            </label>
+                        </div>
+                        <div class="scene">
+                            <label for="scene4">
+                                <input
+                                    type="radio"
+                                    name="scene"
+                                    id="scene4"
+                                    value="scene4"
+                                    class="scene-icon"
+                                    hidden
+                                />
+                                <img
+                                    src="assets/scenes/scene-4.gif"
+                                    alt=""
+                                    class="img-scene-icon"
+                                />
+                            </label>
+                        </div>
+                        <div class="scene">
+                            <label for="scene5">
+                                <input
+                                    type="radio"
+                                    name="scene"
+                                    id="scene5"
+                                    value="scene5"
+                                    class="scene-icon"
+                                    hidden
+                                />
+                                <img
+                                    src="assets/scenes/scene-5.gif"
+                                    alt=""
+                                    class="img-scene-icon"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <h4 class="player02-character-selected"></h4>
+                </div>
+                <button id="screen03-button-continue">Continue</button>
+            </div>
+
+            <!-- SCREEN 94 -->
+
+            <div class="screen04 fighting-screen">
+                <div class="screen04-wrapper">
+                    <div class="top">
+                        <div class="player01-hp-bar player-hp">
+                            <div class="player01-current-hp"></div>
+                        </div>
+                        <div class="pause-button">
+                            <button id="screen04-button-pause">
+                                <i class="fa fa-pause"></i>
+                            </button>
+                            <div class="timer">02:00</div>
+                        </div>
+                        <div class="player02-hp-bar player-hp">
+                            <div class="player02-current-hp"></div>
+                        </div>
+                    </div>
+                    <div class="fighting-ground">
+                        <div id="player01">
+                            <div class="player01-hit-box"></div>
+                            <div class="player01-attack-box"></div>
+                        </div>
+                        <div id="player02">
+                            <div class="player02-hit-box"></div>
+                            <div class="player02-attack-box"></div>
+                        </div>
+                    </div>
+                    <!-- <button id="screen04-button-exit">EXIT</button> -->
+                    <span class="fight-text">FIGHT!</span>
+                    <span class="game-over"></span>
+                    <span class="player-name-winner"></span>
+
+                    <div class="pause-menu">
+                        <button id="button_resume" class="button_1">
+                            Resume
+                        </button>
+                        <button id="button_restart" class="button_4">
+                            Restart
+                        </button>
+                        <button id="button_select_characters" class="button_2">
+                            Select Characters
+                        </button>
+                        <button id="button_exit" class="button_3">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
