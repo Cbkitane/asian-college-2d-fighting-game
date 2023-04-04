@@ -184,8 +184,8 @@ SCREEN03_BUTTON_CONTINUE.addEventListener('click', ()=> {
   // Start playing background music
   playAudio();
 
-  // PLAYER01.textContent = PLAYER01_CHARACTER;
-  // PLAYER02.textContent = PLAYER02_CHARACTER;
+  PLAYER01_HIT_BOX.textContent = PLAYER01_CHARACTER;
+  PLAYER02_HIT_BOX.textContent = PLAYER02_CHARACTER;
 
   isPlaying = true; 
 
@@ -441,7 +441,25 @@ function showGameOverText(PLAYER_HP){
 
 
 
+function isHit(player, enemy){
+  let playerRect = player.getBoundingClientRect();
+  let enemyRect = enemy.getBoundingClientRect();
 
+  let playerRectWidth = playerRect.width;
+  let playerRectHeight = playerRect.height;
+  let playerRectX = playerRect.x;
+  let playerRectY = playerRect.y;
+
+  let enemyRectWidth = enemyRect.width;
+  let enemyRectHeight = enemyRect.height;
+  let enemyRectX = enemyRect.x;
+  let enemyRectY = enemyRect.y;
+
+  return ((playerRectX <= enemyRectX && playerRectX + playerRectWidth >= enemyRectX) 
+       && (playerRectY <= enemyRectY && playerRectY + playerRectHeight >= enemyRectY)
+       || (playerRectX >= enemyRectX && enemyRectX + enemyRectWidth >= playerRectX)
+       && (playerRectY >= enemyRectY && enemyRectY + enemyRectHeight >= playerRectY))
+}
 
 
 
@@ -498,28 +516,32 @@ function movePlayer(){
       if(isAttacking && !PLAYER01_ATTACK_BOX.classList.contains('attack') && !PLAYER02_HIT_BOX.classList.contains('isHit')){
         PLAYER01_ATTACK_BOX.classList.add('attack');
 
-        PLAYER02_HP -= 10;
-        PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
-        PLAYER02_HIT_BOX.classList.add('isHit');
-        
-        setTimeout(function(){
-          PLAYER02_HIT_BOX.classList.remove('isHit');
-        }, 500);
-
         setTimeout(function(){
           PLAYER01_ATTACK_BOX.classList.remove('attack');
         }, 700)
-    
-        if(PLAYER02_HP <= 0){
-          console.log("Player 1 wins!");    
-          clearInterval(timer);
-          document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-          isPlaying = false;
-          hasWinner = true;
+        
 
+        if(isHit(PLAYER01_ATTACK_BOX, PLAYER02_HIT_BOX)){
 
-          showGameOverText(PLAYER01_HP);
-          document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+          PLAYER02_HP -= 10;
+          PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
+          PLAYER02_HIT_BOX.classList.add('isHit');
+
+          setTimeout(function(){
+            PLAYER02_HIT_BOX.classList.remove('isHit');
+          }, 500);
+
+          if(PLAYER02_HP <= 0){
+            console.log("Player 1 wins!");    
+            clearInterval(timer);
+            document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+            isPlaying = false;
+            hasWinner = true;
+  
+  
+            showGameOverText(PLAYER01_HP);
+            document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+          }
         }
       }
     }
@@ -555,31 +577,32 @@ function movePlayer(){
 
     if(isAttacking2 && !PLAYER02_ATTACK_BOX.classList.contains('attack')){
       PLAYER02_ATTACK_BOX.classList.add('attack');
-
-      PLAYER01_HP -= 10;
-      PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
-      PLAYER01_HIT_BOX.classList.add('isHit');
-        
-      setTimeout(function(){
-        PLAYER01_HIT_BOX.classList.remove('isHit');
-      }, 150);
-
-
       setTimeout(function(){
         PLAYER02_ATTACK_BOX.classList.remove('attack');
-      }, 1000)
+      }, 700)
 
-      if(PLAYER01_HP <= 0){
-        console.log("Player 2 wins!");    
-        clearInterval(timer);
-        document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-        isPlaying = false;
-        hasWinner = true;
+      if(isHit(PLAYER02_ATTACK_BOX, PLAYER01_HIT_BOX)){
+        PLAYER01_HP -= 10;
+        PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
+        PLAYER01_HIT_BOX.classList.add('isHit');
+          
+        setTimeout(function(){
+          PLAYER01_HIT_BOX.classList.remove('isHit');
+        }, 500);
 
-        
-        showGameOverText(PLAYER02_HP);
-        document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
+        if(PLAYER01_HP <= 0){
+          console.log("Player 2 wins!");    
+          clearInterval(timer);
+          document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+          isPlaying = false;
+          hasWinner = true;
+  
+          
+          showGameOverText(PLAYER02_HP);
+          document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
+        }
       }
+      
     }
   }
 
