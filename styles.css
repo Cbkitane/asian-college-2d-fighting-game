@@ -467,10 +467,10 @@ body {
 }
 
 
-.fighting-ground {
+/* .fighting-ground {
     width: 100%;
     height: 100vh;
-}
+} */
 
 
 #player01, #player02 {
@@ -481,12 +481,30 @@ body {
 }
 
 #player01 {
-    background-color: red;
     left: 100px;
 }
 #player02 {
-    background-color: blue;
     right: 100px;
+}
+
+#player01-hit-box {
+    width: 200px;
+    height: 130px;
+    background-color: red;
+}
+#player02-hit-box {
+    position: absolute;
+    width: 200px;
+    height: 130px;
+    background-color: blue;
+}
+
+
+#player01.isHit {
+    background-color: white;
+}
+#player02.isHit {
+    background-color: white;
 }
 
 #player01.jump {
@@ -496,20 +514,7 @@ body {
     animation: .5s jump ease-in-out;
 }
 
-.player01-hit-box, .player02-hit-box{
-    position: absolute;
-    width: 200px;
-    height: 20px;
-    left: 50px;
-    background-color: white;
-}
 
-.player01-attack-box, .player02-attack-box{
-    position: absolute;
-    width: 150px;
-    height: 30px;
-    background-color: pink;
-}
 
 .pause-menu.show {
     opacity: 1;

@@ -1,4 +1,4 @@
-
+console.log(document.getElementById('player01-attack-box').offsetWidth);
 
 // SCREEN BUTTONS
 const SCREEN01_BUTTON_START = document.getElementById('screen01-button-start')
@@ -29,6 +29,7 @@ gameLoad();
 const PLAYER01 = document.getElementById('player01');
 const PLAYER02 = document.getElementById('player02');
 
+
 let PLAYER01_CHARACTER = "";
 let PLAYER02_CHARACTER = "";
 
@@ -37,6 +38,7 @@ let PLAYER02_HP = 100;
 
 let PLAYER01_HP_BAR = document.querySelector('.player01-current-hp');
 let PLAYER02_HP_BAR = document.querySelector('.player02-current-hp');
+
 
 
 // BOOLEAN CHECKERS
@@ -456,108 +458,134 @@ function movePlayer(){
   let player02_x_position = PLAYER02.offsetLeft;
   if(isPlaying){
   
+    if(!PLAYER01.classList.contains('isHit')){
+      if(isMovingLeft){
+    
+        // PLAYER 01 MOVEMENTS
+        player01_x_position -= 10;
+
+      
+    
+        // Set left boundary
+        if(player01_x_position <= 0){
+          player01_x_position = 0;
+        }
+      }
   
-    if(isMovingLeft){
   
-      // PLAYER 01 MOVEMENTS
-      player01_x_position -= 10;
+      if(isMovingRight){
+        player01_x_position += 10;
+    
+        // Set right boundary
+        if(player01_x_position + PLAYER01.offsetWidth >= SCREEN04.offsetWidth){
+          player01_x_position = SCREEN04.offsetWidth - PLAYER01.offsetWidth;
+        }
+      }
   
+      if(isJumping && !PLAYER01.classList.contains('jump')){
+        PLAYER01.classList.add('jump');
+        setTimeout(()=> {
+          PLAYER01.classList.remove('jump');
+        }, 500)
+      }
+      if(isAttacking && !PLAYER01.classList.contains('attack') && !PLAYER01.classList.contains('isHit')){
+        PLAYER01.classList.add('attack');
+
+        PLAYER02_HP -= 10;
+        PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
+        PLAYER02.classList.add('isHit');
+        
+        setTimeout(function(){
+          PLAYER02.classList.remove('isHit');
+        }, 150);
+
+        setTimeout(function(){
+          PLAYER01.classList.remove('attack');
+        }, 1000)
+    
+        if(PLAYER02_HP <= 0){
+          console.log("Player 1 wins!");    
+          clearInterval(timer);
+          document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+          isPlaying = false;
+          hasWinner = true;
+
+
+          showGameOverText(PLAYER01_HP);
+          document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+        }
+      }
+    }
+  
+  
+
+  // PLAYER 02 MOVEMENTS
+  if(!PLAYER02.classList.contains('isHit')){
+    if(isMovingLeft2){
+      player02_x_position -= 10;
+
       // Set left boundary
-      if(player01_x_position <= 0){
-        player01_x_position = 0;
+      if(player02_x_position <= 0){
+        player02_x_position = 0;
       }
     }
-  
-  
-    if(isMovingRight){
-      player01_x_position += 10;
-  
+
+    if(isMovingRight2){
+      player02_x_position += 10;
+
       // Set right boundary
-      if(player01_x_position + PLAYER01.offsetWidth >= SCREEN04.offsetWidth){
-        player01_x_position = SCREEN04.offsetWidth - PLAYER01.offsetWidth;
+      if(player02_x_position + PLAYER02.offsetWidth >= SCREEN04.offsetWidth){
+        player02_x_position = SCREEN04.offsetWidth - PLAYER02.offsetWidth;
       }
     }
-  
-    if(isJumping && !PLAYER01.classList.contains('jump')){
-      PLAYER01.classList.add('jump');
+
+    if(isJumping2 && !PLAYER02.classList.contains('jump')){
+      PLAYER02.classList.add('jump');
       setTimeout(()=> {
-        PLAYER01.classList.remove('jump');
+        PLAYER02.classList.remove('jump');
       }, 500)
     }
-    if(isAttacking && !PLAYER01.classList.contains('attack')){
-      PLAYER01.classList.add('attack');
-      PLAYER02_HP -= 10;
-      PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
+
+    if(isAttacking2 && !PLAYER02.classList.contains('attack')){
+      PLAYER02.classList.add('attack');
+
+      PLAYER01_HP -= 10;
+      PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
+      PLAYER01.classList.add('isHit');
+        
       setTimeout(function(){
-        PLAYER01.classList.remove('attack');
-      }, 300)
-  
-      if(PLAYER02_HP <= 0){
-        console.log("Player 1 wins!");    
+        PLAYER01.classList.remove('isHit');
+      }, 150);
+
+
+      setTimeout(function(){
+        PLAYER02.classList.remove('attack');
+      }, 1000)
+
+      if(PLAYER01_HP <= 0){
+        console.log("Player 2 wins!");    
         clearInterval(timer);
         document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
         isPlaying = false;
         hasWinner = true;
 
-
-        showGameOverText(PLAYER01_HP);
-        document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+        
+        showGameOverText(PLAYER02_HP);
+        document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
       }
-  }
-  
-  
-
-  // PLAYER 02 MOVEMENTS
-  if(isMovingLeft2){
-    player02_x_position -= 10;
-
-    // Set left boundary
-    if(player02_x_position <= 0){
-      player02_x_position = 0;
-    }
-  }
-
-  if(isMovingRight2){
-    player02_x_position += 10;
-
-    // Set right boundary
-    if(player02_x_position + PLAYER02.offsetWidth >= SCREEN04.offsetWidth){
-      player02_x_position = SCREEN04.offsetWidth - PLAYER02.offsetWidth;
-    }
-  }
-
-  if(isJumping2 && !PLAYER02.classList.contains('jump')){
-    PLAYER02.classList.add('jump');
-    setTimeout(()=> {
-      PLAYER02.classList.remove('jump');
-    }, 500)
-  }
-
-  if(isAttacking2 && !PLAYER02.classList.contains('attack')){
-    PLAYER02.classList.add('attack');
-    PLAYER01_HP -= 10;
-    PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
-    setTimeout(function(){
-      PLAYER02.classList.remove('attack');
-    }, 300)
-
-    if(PLAYER01_HP <= 0){
-      console.log("Player 2 wins!");    
-      clearInterval(timer);
-      document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-      isPlaying = false;
-      hasWinner = true;
-
-      
-      showGameOverText(PLAYER02_HP);
-      document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
     }
   }
 
 }
 
 
-
+  if(player01_x_position > player02_x_position){
+    PLAYER01.style.transform = "scaleX(-1)";
+    PLAYER02.style.transform = "scaleX(-1)";
+  }else{
+    PLAYER01.style.transform = "scaleX(1)";
+    PLAYER02.style.transform = "scaleX(1)";
+  }
 
   PLAYER01.style.left = player01_x_position + 'px';
   PLAYER02.style.left = player02_x_position + 'px';
