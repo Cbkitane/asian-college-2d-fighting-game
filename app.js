@@ -489,11 +489,12 @@ function movePlayer(){
   if(player01HasSelected && player02HasSelected){
     setInterval(()=> {
       PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/idle/idle-1.png";
-    }, 200)
+    }, 500)
   
     setInterval(()=> {
       PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/idle/idle-1.png";
-    }, 200)
+    }, 500)
+  
   }
   
 
@@ -533,15 +534,16 @@ function movePlayer(){
       if(isAttacking && !PLAYER01_ATTACK_BOX.classList.contains('attack') && !PLAYER02_HIT_BOX.classList.contains('isHit')){
         PLAYER01_ATTACK_BOX.classList.add('attack');
 
-        let counter = 0;
+        let counter = 1;
 
         let attackAnimation = setInterval(()=> {
-          if(counter > 4){
-            clearInterval(attackAnimation);
-          }
           PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/attack/attack-" + counter + ".png";
           counter++;
-        }, 100)
+
+          if(counter == 4){
+            clearInterval(attackAnimation);
+          }
+        }, 500)
 
         setTimeout(function(){
           PLAYER01_ATTACK_BOX.classList.remove('attack');
@@ -606,6 +608,20 @@ function movePlayer(){
 
     if(isAttacking2 && !PLAYER02_ATTACK_BOX.classList.contains('attack')){
       PLAYER02_ATTACK_BOX.classList.add('attack');
+
+      let counter2 = 1;
+
+      let attackAnimation2 = setInterval(()=> {
+        PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/attack/attack-" + counter2 + ".png";
+        counter2++;
+        
+        if(counter2 == 4){
+          clearInterval(attackAnimation2);
+        }
+
+      }, 500)
+
+
       setTimeout(function(){
         PLAYER02_ATTACK_BOX.classList.remove('attack');
       }, 500)

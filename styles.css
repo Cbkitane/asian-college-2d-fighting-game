@@ -529,7 +529,7 @@ body {
 }
 
 #player01-attack-box {
-    background-color: white;
+    /* background-color: white; */
     width: 130px;
     height: 25px;
     position: absolute;
@@ -539,7 +539,7 @@ body {
 }
 
 #player02-attack-box {
-    background-color: white;
+    /* background-color: white; */
     width: 130px;
     height: 25px;
     position: absolute;
