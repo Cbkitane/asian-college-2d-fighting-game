@@ -60,7 +60,8 @@ const BGM = new Audio('assets/sfx/bgm-1.mp3');
 const FIGHT_SFX = new Audio('assets/sfx/fight-start.mp3');
 const GAME_OVER_SFX = new Audio('assets/sfx/game-over.mp3');
       GAME_OVER_SFX.volume = .2;
-
+const HIT_SFX = new Audio('assets/sfx/hit.mp3');
+      HIT_SFX.volume = .2;
 
 
 
@@ -122,8 +123,8 @@ SCREEN02_BUTTON_CONTINUE.addEventListener('click', ()=> {
   SCREEN02.classList.add('hide');
   SCREEN03.classList.remove('hide');
 
-  player01HasSelected = false;
-  player02HasSelected = false;
+  // player01HasSelected = false;
+  // player02HasSelected = false;
 
   SCREEN02_BUTTON_CONTINUE.classList.remove('show');
 
@@ -184,8 +185,8 @@ SCREEN03_BUTTON_CONTINUE.addEventListener('click', ()=> {
   // Start playing background music
   playAudio();
 
-  PLAYER01_HIT_BOX.textContent = PLAYER01_CHARACTER;
-  PLAYER02_HIT_BOX.textContent = PLAYER02_CHARACTER;
+  PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/idle/idle-1.png";
+  PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/idle/idle-1.png";
 
   isPlaying = true; 
 
@@ -242,6 +243,9 @@ document.querySelector('.pause-menu').addEventListener('click', (e)=> {
 function resetSelection(){
   gameLoad();
   SCREEN01.classList.remove('hide');
+
+  SCREEN02_BUTTON_CONTINUE.classList.remove('show');
+  SCREEN03_BUTTON_CONTINUE.classList.remove('show');
 
   document.querySelector('.player01-character-selected').textContent = "";
   document.querySelector('.player02-character-selected').textContent = "";
@@ -481,8 +485,20 @@ function movePlayer(){
   let player01_x_position = PLAYER01.offsetLeft;
   let player02_x_position = PLAYER02.offsetLeft;
 
-  if(isPlaying){
   
+  if(player01HasSelected && player02HasSelected){
+    setInterval(()=> {
+      PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/idle/idle-1.png";
+    }, 200)
+  
+    setInterval(()=> {
+      PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/idle/idle-1.png";
+    }, 200)
+  }
+  
+
+  if(isPlaying){
+
     if(!PLAYER01_HIT_BOX.classList.contains('isHit')){
       if(isMovingLeft){
     
@@ -513,22 +529,35 @@ function movePlayer(){
           PLAYER01.classList.remove('jump');
         }, 500)
       }
+      
       if(isAttacking && !PLAYER01_ATTACK_BOX.classList.contains('attack') && !PLAYER02_HIT_BOX.classList.contains('isHit')){
         PLAYER01_ATTACK_BOX.classList.add('attack');
 
+        let counter = 0;
+
+        let attackAnimation = setInterval(()=> {
+          if(counter > 4){
+            clearInterval(attackAnimation);
+          }
+          PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/attack/attack-" + counter + ".png";
+          counter++;
+        }, 100)
+
         setTimeout(function(){
           PLAYER01_ATTACK_BOX.classList.remove('attack');
-        }, 700)
+        }, 500)
         
 
         if(isHit(PLAYER01_ATTACK_BOX, PLAYER02_HIT_BOX)){
-
+          HIT_SFX.currentTime = .1;
+          HIT_SFX.play();
           PLAYER02_HP -= 10;
           PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
           PLAYER02_HIT_BOX.classList.add('isHit');
 
           setTimeout(function(){
             PLAYER02_HIT_BOX.classList.remove('isHit');
+            HIT_SFX.pause();
           }, 300);
 
           if(PLAYER02_HP <= 0){
@@ -579,15 +608,18 @@ function movePlayer(){
       PLAYER02_ATTACK_BOX.classList.add('attack');
       setTimeout(function(){
         PLAYER02_ATTACK_BOX.classList.remove('attack');
-      }, 700)
+      }, 500)
 
       if(isHit(PLAYER02_ATTACK_BOX, PLAYER01_HIT_BOX)){
+        HIT_SFX.currentTime = .1;
+        HIT_SFX.play();
         PLAYER01_HP -= 10;
         PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
         PLAYER01_HIT_BOX.classList.add('isHit');
           
         setTimeout(function(){
           PLAYER01_HIT_BOX.classList.remove('isHit');
+          HIT_SFX.pause();
         }, 300);
 
         if(PLAYER01_HP <= 0){
