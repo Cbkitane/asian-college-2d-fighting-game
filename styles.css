@@ -473,6 +473,7 @@ body {
 } */
 
 
+/* 
 #player01, #player02 {
     position: absolute;
     bottom: 40px;
@@ -497,8 +498,62 @@ body {
     width: 200px;
     height: 130px;
     background-color: blue;
+} */
+
+.player-wrapper {
+    position: absolute;
+    bottom: 20px;
+    height: 250px;
+    width: 200px;
 }
 
+.player01-wrapper {
+    left: 100px;
+}
+
+.player02-wrapper {
+    right: 100px;
+    transform: scaleX(-1);
+}
+
+#player01, #player02 {
+    width: 57%;
+    height: 100%;
+}
+
+#player01 {
+    background-color: red;
+}
+#player02 {
+    background-color: blue;
+}
+
+#player01-attack-box {
+    background-color: white;
+    width: 130px;
+    height: 25px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    display: none;
+}
+
+#player02-attack-box {
+    background-color: white;
+    width: 130px;
+    height: 25px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    display: none;
+}
+
+#player01-attack-box.attack {
+    display: block;
+}
+#player02-attack-box.attack {
+    display: block;
+}
 
 #player01.isHit {
     background-color: white;
@@ -507,10 +562,10 @@ body {
     background-color: white;
 }
 
-#player01.jump {
+.player01-wrapper.jump {
     animation: .5s jump ease-in-out;
 }
-#player02.jump {
+.player02-wrapper.jump {
     animation: .5s jump ease-in-out;
 }
 

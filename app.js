@@ -1,4 +1,3 @@
-console.log(document.getElementById('player01-attack-box').offsetWidth);
 
 // SCREEN BUTTONS
 const SCREEN01_BUTTON_START = document.getElementById('screen01-button-start')
@@ -26,8 +25,8 @@ gameLoad();
 
 
 // PLAYERS ATTRIBUTES
-const PLAYER01 = document.getElementById('player01');
-const PLAYER02 = document.getElementById('player02');
+const PLAYER01 = document.querySelector('.player01-wrapper');
+const PLAYER02 = document.querySelector('.player02-wrapper');
 
 
 let PLAYER01_CHARACTER = "";
@@ -38,6 +37,12 @@ let PLAYER02_HP = 100;
 
 let PLAYER01_HP_BAR = document.querySelector('.player01-current-hp');
 let PLAYER02_HP_BAR = document.querySelector('.player02-current-hp');
+
+let PLAYER01_HIT_BOX = document.querySelector('#player01');
+let PLAYER02_HIT_BOX = document.querySelector('#player02');
+
+let PLAYER01_ATTACK_BOX = document.querySelector('#player01-attack-box');
+let PLAYER02_ATTACK_BOX = document.querySelector('#player02-attack-box');
 
 
 
@@ -179,8 +184,8 @@ SCREEN03_BUTTON_CONTINUE.addEventListener('click', ()=> {
   // Start playing background music
   playAudio();
 
-  PLAYER01.textContent = PLAYER01_CHARACTER;
-  PLAYER02.textContent = PLAYER02_CHARACTER;
+  // PLAYER01.textContent = PLAYER01_CHARACTER;
+  // PLAYER02.textContent = PLAYER02_CHARACTER;
 
   isPlaying = true; 
 
@@ -271,8 +276,8 @@ function resetSelection(){
   GAME_OVER_SFX.pause();
   GAME_OVER_SFX.currentTime = 0;
 
-  PLAYER01.style.left = 20 + 'px';
-  PLAYER02.style.left = SCREEN04.offsetWidth - (PLAYER01.offsetLeft + PLAYER01.offsetWidth + 20) + 'px';
+  PLAYER01.style.left = 100 + 'px';
+  PLAYER02.style.left = SCREEN04.offsetWidth - (PLAYER02_HIT_BOX.offsetLeft + PLAYER02.offsetWidth + 100) + 'px';
 
   isPlaying = false;
 
@@ -326,7 +331,8 @@ function restartMatch(){
   playAudio();
 
   PLAYER01.style.left = 100 + 'px';
-  PLAYER02.style.left = SCREEN04.offsetWidth - (PLAYER01.offsetLeft + PLAYER01.offsetWidth + 100) + 'px';
+  PLAYER02.style.left = SCREEN04.offsetWidth - (PLAYER02_HIT_BOX.offsetLeft + PLAYER02.offsetWidth + 100) + 'px';
+
 
   isPlaying = true;
 
@@ -456,9 +462,10 @@ let isAttacking2 = false;
 function movePlayer(){
   let player01_x_position = PLAYER01.offsetLeft;
   let player02_x_position = PLAYER02.offsetLeft;
+
   if(isPlaying){
   
-    if(!PLAYER01.classList.contains('isHit')){
+    if(!PLAYER01_HIT_BOX.classList.contains('isHit')){
       if(isMovingLeft){
     
         // PLAYER 01 MOVEMENTS
@@ -488,20 +495,20 @@ function movePlayer(){
           PLAYER01.classList.remove('jump');
         }, 500)
       }
-      if(isAttacking && !PLAYER01.classList.contains('attack') && !PLAYER01.classList.contains('isHit')){
-        PLAYER01.classList.add('attack');
+      if(isAttacking && !PLAYER01_ATTACK_BOX.classList.contains('attack') && !PLAYER02_HIT_BOX.classList.contains('isHit')){
+        PLAYER01_ATTACK_BOX.classList.add('attack');
 
         PLAYER02_HP -= 10;
         PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
-        PLAYER02.classList.add('isHit');
+        PLAYER02_HIT_BOX.classList.add('isHit');
         
         setTimeout(function(){
-          PLAYER02.classList.remove('isHit');
-        }, 150);
+          PLAYER02_HIT_BOX.classList.remove('isHit');
+        }, 500);
 
         setTimeout(function(){
-          PLAYER01.classList.remove('attack');
-        }, 1000)
+          PLAYER01_ATTACK_BOX.classList.remove('attack');
+        }, 700)
     
         if(PLAYER02_HP <= 0){
           console.log("Player 1 wins!");    
@@ -520,7 +527,7 @@ function movePlayer(){
   
 
   // PLAYER 02 MOVEMENTS
-  if(!PLAYER02.classList.contains('isHit')){
+  if(!PLAYER02_HIT_BOX.classList.contains('isHit')){
     if(isMovingLeft2){
       player02_x_position -= 10;
 
@@ -546,20 +553,20 @@ function movePlayer(){
       }, 500)
     }
 
-    if(isAttacking2 && !PLAYER02.classList.contains('attack')){
-      PLAYER02.classList.add('attack');
+    if(isAttacking2 && !PLAYER02_ATTACK_BOX.classList.contains('attack')){
+      PLAYER02_ATTACK_BOX.classList.add('attack');
 
       PLAYER01_HP -= 10;
       PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
-      PLAYER01.classList.add('isHit');
+      PLAYER01_HIT_BOX.classList.add('isHit');
         
       setTimeout(function(){
-        PLAYER01.classList.remove('isHit');
+        PLAYER01_HIT_BOX.classList.remove('isHit');
       }, 150);
 
 
       setTimeout(function(){
-        PLAYER02.classList.remove('attack');
+        PLAYER02_ATTACK_BOX.classList.remove('attack');
       }, 1000)
 
       if(PLAYER01_HP <= 0){
@@ -581,10 +588,10 @@ function movePlayer(){
 
   if(player01_x_position > player02_x_position){
     PLAYER01.style.transform = "scaleX(-1)";
-    PLAYER02.style.transform = "scaleX(-1)";
+    PLAYER02.style.transform = "scaleX(1)";
   }else{
     PLAYER01.style.transform = "scaleX(1)";
-    PLAYER02.style.transform = "scaleX(1)";
+    PLAYER02.style.transform = "scaleX(-1)";
   }
 
   PLAYER01.style.left = player01_x_position + 'px';
