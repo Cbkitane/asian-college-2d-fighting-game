@@ -529,7 +529,7 @@ function movePlayer(){
 
           setTimeout(function(){
             PLAYER02_HIT_BOX.classList.remove('isHit');
-          }, 500);
+          }, 300);
 
           if(PLAYER02_HP <= 0){
             console.log("Player 1 wins!");    
@@ -588,7 +588,7 @@ function movePlayer(){
           
         setTimeout(function(){
           PLAYER01_HIT_BOX.classList.remove('isHit');
-        }, 500);
+        }, 300);
 
         if(PLAYER01_HP <= 0){
           console.log("Player 2 wins!");    
