@@ -503,7 +503,7 @@ body {
 .player-wrapper {
     position: absolute;
     bottom: 20px;
-    height: 250px;
+    height: 350px;
     width: 200px;
 }
 
@@ -517,7 +517,7 @@ body {
 }
 
 #player01, #player02 {
-    width: 57%;
+    width: 50%;
     height: 100%;
 }
 
@@ -529,7 +529,7 @@ body {
 }
 
 #player01-attack-box {
-    background-color: white;
+    /* background-color: white; */
     width: 130px;
     height: 25px;
     position: absolute;
@@ -539,7 +539,7 @@ body {
 }
 
 #player02-attack-box {
-    background-color: white;
+    /* background-color: white; */
     width: 130px;
     height: 25px;
     position: absolute;

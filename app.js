@@ -60,7 +60,8 @@ const BGM = new Audio('assets/sfx/bgm-1.mp3');
 const FIGHT_SFX = new Audio('assets/sfx/fight-start.mp3');
 const GAME_OVER_SFX = new Audio('assets/sfx/game-over.mp3');
       GAME_OVER_SFX.volume = .2;
-
+const HIT_SFX = new Audio('assets/sfx/hit.mp3');
+      HIT_SFX.volume = .2;
 
 
 
@@ -122,8 +123,8 @@ SCREEN02_BUTTON_CONTINUE.addEventListener('click', ()=> {
   SCREEN02.classList.add('hide');
   SCREEN03.classList.remove('hide');
 
-  player01HasSelected = false;
-  player02HasSelected = false;
+  // player01HasSelected = false;
+  // player02HasSelected = false;
 
   SCREEN02_BUTTON_CONTINUE.classList.remove('show');
 
@@ -184,8 +185,8 @@ SCREEN03_BUTTON_CONTINUE.addEventListener('click', ()=> {
   // Start playing background music
   playAudio();
 
-  // PLAYER01.textContent = PLAYER01_CHARACTER;
-  // PLAYER02.textContent = PLAYER02_CHARACTER;
+  PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/idle/idle-1.png";
+  PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/idle/idle-1.png";
 
   isPlaying = true; 
 
@@ -242,6 +243,9 @@ document.querySelector('.pause-menu').addEventListener('click', (e)=> {
 function resetSelection(){
   gameLoad();
   SCREEN01.classList.remove('hide');
+
+  SCREEN02_BUTTON_CONTINUE.classList.remove('show');
+  SCREEN03_BUTTON_CONTINUE.classList.remove('show');
 
   document.querySelector('.player01-character-selected').textContent = "";
   document.querySelector('.player02-character-selected').textContent = "";
@@ -441,7 +445,25 @@ function showGameOverText(PLAYER_HP){
 
 
 
+function isHit(player, enemy){
+  let playerRect = player.getBoundingClientRect();
+  let enemyRect = enemy.getBoundingClientRect();
 
+  let playerRectWidth = playerRect.width;
+  let playerRectHeight = playerRect.height;
+  let playerRectX = playerRect.x;
+  let playerRectY = playerRect.y;
+
+  let enemyRectWidth = enemyRect.width;
+  let enemyRectHeight = enemyRect.height;
+  let enemyRectX = enemyRect.x;
+  let enemyRectY = enemyRect.y;
+
+  return ((playerRectX <= enemyRectX && playerRectX + playerRectWidth >= enemyRectX) 
+       && (playerRectY <= enemyRectY && playerRectY + playerRectHeight >= enemyRectY)
+       || (playerRectX >= enemyRectX && enemyRectX + enemyRectWidth >= playerRectX)
+       && (playerRectY >= enemyRectY && enemyRectY + enemyRectHeight >= playerRectY))
+}
 
 
 
@@ -463,8 +485,21 @@ function movePlayer(){
   let player01_x_position = PLAYER01.offsetLeft;
   let player02_x_position = PLAYER02.offsetLeft;
 
-  if(isPlaying){
   
+  if(player01HasSelected && player02HasSelected){
+    setInterval(()=> {
+      PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/idle/idle-1.png";
+    }, 500)
+  
+    setInterval(()=> {
+      PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/idle/idle-1.png";
+    }, 500)
+  
+  }
+  
+
+  if(isPlaying){
+
     if(!PLAYER01_HIT_BOX.classList.contains('isHit')){
       if(isMovingLeft){
     
@@ -495,31 +530,49 @@ function movePlayer(){
           PLAYER01.classList.remove('jump');
         }, 500)
       }
+      
       if(isAttacking && !PLAYER01_ATTACK_BOX.classList.contains('attack') && !PLAYER02_HIT_BOX.classList.contains('isHit')){
         PLAYER01_ATTACK_BOX.classList.add('attack');
 
-        PLAYER02_HP -= 10;
-        PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
-        PLAYER02_HIT_BOX.classList.add('isHit');
-        
-        setTimeout(function(){
-          PLAYER02_HIT_BOX.classList.remove('isHit');
-        }, 500);
+        let counter = 1;
+
+        let attackAnimation = setInterval(()=> {
+          PLAYER01_HIT_BOX.src = "assets/characters/" + PLAYER01_CHARACTER + "/attack/attack-" + counter + ".png";
+          counter++;
+
+          if(counter == 4){
+            clearInterval(attackAnimation);
+          }
+        }, 500)
 
         setTimeout(function(){
           PLAYER01_ATTACK_BOX.classList.remove('attack');
-        }, 700)
-    
-        if(PLAYER02_HP <= 0){
-          console.log("Player 1 wins!");    
-          clearInterval(timer);
-          document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-          isPlaying = false;
-          hasWinner = true;
+        }, 500)
+        
 
+        if(isHit(PLAYER01_ATTACK_BOX, PLAYER02_HIT_BOX)){
+          HIT_SFX.currentTime = .1;
+          HIT_SFX.play();
+          PLAYER02_HP -= 10;
+          PLAYER02_HP_BAR.style.width = PLAYER02_HP + "%";
+          PLAYER02_HIT_BOX.classList.add('isHit');
 
-          showGameOverText(PLAYER01_HP);
-          document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+          setTimeout(function(){
+            PLAYER02_HIT_BOX.classList.remove('isHit');
+            HIT_SFX.pause();
+          }, 300);
+
+          if(PLAYER02_HP <= 0){
+            console.log("Player 1 wins!");    
+            clearInterval(timer);
+            document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+            isPlaying = false;
+            hasWinner = true;
+  
+  
+            showGameOverText(PLAYER01_HP);
+            document.querySelector('.player-name-winner').textContent = "Player 01 Wins!";
+          }
         }
       }
     }
@@ -556,30 +609,48 @@ function movePlayer(){
     if(isAttacking2 && !PLAYER02_ATTACK_BOX.classList.contains('attack')){
       PLAYER02_ATTACK_BOX.classList.add('attack');
 
-      PLAYER01_HP -= 10;
-      PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
-      PLAYER01_HIT_BOX.classList.add('isHit');
+      let counter2 = 1;
+
+      let attackAnimation2 = setInterval(()=> {
+        PLAYER02_HIT_BOX.src = "assets/characters/" + PLAYER02_CHARACTER + "/attack/attack-" + counter2 + ".png";
+        counter2++;
         
-      setTimeout(function(){
-        PLAYER01_HIT_BOX.classList.remove('isHit');
-      }, 150);
+        if(counter2 == 4){
+          clearInterval(attackAnimation2);
+        }
+
+      }, 500)
 
 
       setTimeout(function(){
         PLAYER02_ATTACK_BOX.classList.remove('attack');
-      }, 1000)
+      }, 500)
 
-      if(PLAYER01_HP <= 0){
-        console.log("Player 2 wins!");    
-        clearInterval(timer);
-        document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-        isPlaying = false;
-        hasWinner = true;
+      if(isHit(PLAYER02_ATTACK_BOX, PLAYER01_HIT_BOX)){
+        HIT_SFX.currentTime = .1;
+        HIT_SFX.play();
+        PLAYER01_HP -= 10;
+        PLAYER01_HP_BAR.style.width = PLAYER01_HP + "%";
+        PLAYER01_HIT_BOX.classList.add('isHit');
+          
+        setTimeout(function(){
+          PLAYER01_HIT_BOX.classList.remove('isHit');
+          HIT_SFX.pause();
+        }, 300);
 
-        
-        showGameOverText(PLAYER02_HP);
-        document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
+        if(PLAYER01_HP <= 0){
+          console.log("Player 2 wins!");    
+          clearInterval(timer);
+          document.querySelector('.timer').textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+          isPlaying = false;
+          hasWinner = true;
+  
+          
+          showGameOverText(PLAYER02_HP);
+          document.querySelector('.player-name-winner').textContent = "Player 02 Wins!";
+        }
       }
+      
     }
   }
 
